@@ -6,7 +6,7 @@
 /*   By: rkamegne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:57:26 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/01 23:30:09 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/04 06:38:14 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ void	ft_draw_image(void	*mlx_ptr, void *win_ptr, t_hook *param)
 	void	*image_ptr;
 	char	*image_str;
 	int		specs[3];
-	int		colour[3] = {0x990000, 0x009900, 0x990000};
-	int		n;
-	int		d;
+	double  h;
+	double  s;
+	double  v;
+	t_color		*c;
 
 	image_ptr = mlx_new_image(mlx_ptr, WIDTH, HEIGHT);
 	image_str = mlx_get_data_addr(image_ptr, &specs[0], &specs[1], &specs[2]);
@@ -47,14 +48,8 @@ void	ft_draw_image(void	*mlx_ptr, void *win_ptr, t_hook *param)
 	fract.x = 0.0f;
 	fract.image_x = (fract.x2 - fract.x1) * fract.zoom;
 	fract.image_y = (fract.y2 - fract.y1) * fract.zoom;
-	n = 0;
-	while (++fract.i < fract.it_max)
-	{
-		if (n > 3)
-			n = 0;
-		fract.color[fract.i] = (int) (fract.i * colour[n]);
-		n++;
-	}
+	//printf("1\n");
+
 	while (fract.x < WIDTH)
 	{
 		fract.y = 0.0f;
@@ -67,23 +62,32 @@ void	ft_draw_image(void	*mlx_ptr, void *win_ptr, t_hook *param)
 			fract.i = 0;
 			do
 			{
-				if (!(ft_opti(fract.c_r, fract.c_i)))
-					break;
+				//if (!(ft_opti(fract.c_r, fract.c_i)))
+					//break;
 				fract.tmp = fract.z_r;
 				fract.z_r = fract.z_r * fract.z_r - fract.z_i * fract.z_i + fract.c_r;
 				fract.z_i = 2 * fract.z_i * fract.tmp + fract.c_i;
 				fract.i++;
 			} while (fract.z_r * fract.z_r + fract.z_i * fract.z_i <= (1 << 16) && fract.i < fract.it_max);
+			h = (360 * fract.i / fract.it_max);
+			s = 255;
+			if (fract.i < fract.it_max)
+				v = 9999;
+			else
+				v = 0;
+			//printf("2\n");
+			c = ft_init();
+			ft_hsv2rgb(c, h, s, v);
+			//printf("3\n");
 			if (fract.i == fract.it_max)
-				mlx_put_pixel_img(image_str, fract.x, fract.y, 0x0);
-			else if (fract.i == 0)
-				mlx_put_pixel_img(image_str, fract.x, fract.y, 0x0);			
-			else if (fract.i != fract.it_max)
-				mlx_put_pixel_img(image_str, fract.x, fract.y, fract.color[fract.i]);//RGB(0, 0, fract.color[fract.i])); 
+				mlx_put_pixel_img(image_str, fract.x, fract.y, 0x0);		
+			else 
+				mlx_put_pixel_img(image_str, fract.x, fract.y, ((int)(c->r) << 16 | (int)(c->g) << 8 | (int)c->b));
 			fract.y++;
 		}
 		fract.x++;
 	}
+
 	mlx_put_image_to_window(mlx_ptr, win_ptr, image_ptr, 0, 0);
 	mlx_destroy_image(mlx_ptr, image_ptr);
 }

@@ -45,7 +45,12 @@ typedef struct	s_fract
 	int			zoom;
 	int			color[1000];
 }				t_fract;
-
+typedef struct 	s_color
+{
+	double		r;
+	double		g;
+	double		b;
+}				t_color;
 typedef struct	s_hook
 {
 	void		*mlx_ptr;
@@ -57,4 +62,6 @@ void	ft_draw_image(void *mlx_ptr, void *win_ptr, t_hook *param);
 int		ft_get_color(int color1, int color2, double percentage);
 int		ft_opti(float x, float y);
 int		deal_mouse(int button, int x, int y, void *param);
+t_color	*ft_init(void);
+void	ft_hsv2rgb(t_color *c, double h, double s, double v);
 #endif

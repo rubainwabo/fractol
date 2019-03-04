@@ -22,7 +22,7 @@ int		ft_opti(float x, float y)
 	x_square = x * x;
 	y_square = y * y;
 	p = sqrt(x_square - 0.4375 + y_square);
-	if ((x <= p - (2 * p * p) + 0.25) && (x_square + 2 * x + 1 + y_square <=
+	if ((x <= p - (2 * p * p) + 0.25) || (x_square + 2 * x + 1 + y_square <=
 				0.0625))
 		return (0);
 	return (1);
