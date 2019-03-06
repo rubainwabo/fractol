@@ -1,0 +1,12 @@
+#include <stdio.h>
+
+int		main(void)
+{
+	float	zoom_x;
+	float	zoom_y;
+
+	zoom_x = 1200 / 2.5 + 0.6;
+	zoom_y = 1200 / 2.0;
+	printf("zoom_x = %f and zoom_y = %f\n", zoom_x, zoom_y);
+	return (0);
+}

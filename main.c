@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkamegne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:57:26 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/04 06:38:14 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/06 02:54:03 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,73 +25,78 @@ void	mlx_put_pixel_img(char *image_str, int x, int y, int color)
 	}
 }
 
-void	ft_draw_image(void	*mlx_ptr, void *win_ptr, t_hook *param)
+void	ft_draw_image(void *mlx_ptr, void *win_ptr, t_hook *param)
 {
-	t_fract fract;
+	t_fract *f;
+	t_fract	fract;
 	void	*image_ptr;
 	char	*image_str;
 	int		specs[3];
-	double  h;
+	/*double  h;
 	double  s;
-	double  v;
+	double  v;*/
 	t_color		*c;
 
+	if (!(f = (t_fract*)malloc(sizeof(t_fract))))
+		return ;
 	image_ptr = mlx_new_image(mlx_ptr, WIDTH, HEIGHT);
 	image_str = mlx_get_data_addr(image_ptr, &specs[0], &specs[1], &specs[2]);
-	fract.i = -1;
-	fract.zoom = param->fract.zoom;
-	fract.it_max = param->fract.it_max;
-	fract.x1 = -2.5f;
-	fract.x2 = 0.6f;
-	fract.y1 = -1.0f;
-	fract.y2 = 1.0f;
-	fract.x = 0.0f;
-	fract.image_x = (fract.x2 - fract.x1) * fract.zoom;
-	fract.image_y = (fract.y2 - fract.y1) * fract.zoom;
-	//printf("1\n");
-
-	while (fract.x < WIDTH)
+	f->i = -1;
+	f->it_max = param->fract.it_max;
+	f->x1 = -2.5f;
+	f->x2 = 0.6f;
+	f->y1 = -1.0f;
+	f->y2 = 1.0f;
+	f->x = 0.0f;
+	while (f->x < WIDTH)
 	{
-		fract.y = 0.0f;
-		while (fract.y < HEIGHT)
+		f->y = 0.0f;
+		while (f->y < HEIGHT)
 		{
-			fract.c_r =  /*fract.x / fract.zoom + fract.x1;*/  fract.x1 + (fract.x / WIDTH) * (fract.x2 - fract.x1);
-			fract.c_i =  /*fract.y / fract.zoom + fract.y1;*/  fract.y1 + (fract.y / HEIGHT) * (fract.y2 - fract.y1);
-			fract.z_r = 0;
-			fract.z_i = 0;
-			fract.i = 0;
+			f->c_r = f->x1 + (f->x / WIDTH) * (f->x2 - f->x1) * param->e.zoom;
+			f->c_i = f->y1 + (f->y / HEIGHT) * (f->y2 - f->y1) * param->e.zoom;
+			f->z_r = 0;
+			f->z_i = 0;
+			f->i = 0;
 			do
 			{
-				//if (!(ft_opti(fract.c_r, fract.c_i)))
+				//if (!(ft_opti(f->c_r, f->c_i)))
 					//break;
-				fract.tmp = fract.z_r;
-				fract.z_r = fract.z_r * fract.z_r - fract.z_i * fract.z_i + fract.c_r;
-				fract.z_i = 2 * fract.z_i * fract.tmp + fract.c_i;
-				fract.i++;
-			} while (fract.z_r * fract.z_r + fract.z_i * fract.z_i <= (1 << 16) && fract.i < fract.it_max);
-			h = (360 * fract.i / fract.it_max);
+				f->tmp = f->z_r;
+				f->z_r = f->z_r * f->z_r - f->z_i * f->z_i + f->c_r;
+				f->z_i = 2 * f->z_i * f->tmp + f->c_i;
+				f->i++;
+			} while (f->z_r * f->z_r + f->z_i * f->z_i <= (1 << 16) && f->i < f->it_max);
+			/*if (f->i < f->it_max)
+			{
+				double log_z = log(f->z_r * f->z_r + f->z_i * f->z_i) / 2;
+				double nu = log(log_z / log(2)) / log(2);
+				f->i = f->i + 1 - nu;
+			}*/
+			/*h = (360 * f->i / f->it_max);
 			s = 255;
-			if (fract.i < fract.it_max)
-				v = 9999;
+			if (f->i < f->it_max)
+				v = 255;
 			else
 				v = 0;
-			//printf("2\n");
+			//printf("2\n");*/
+			//ft_zoom(param, f);
 			c = ft_init();
-			ft_hsv2rgb(c, h, s, v);
-			//printf("3\n");
-			if (fract.i == fract.it_max)
-				mlx_put_pixel_img(image_str, fract.x, fract.y, 0x0);		
-			else 
-				mlx_put_pixel_img(image_str, fract.x, fract.y, ((int)(c->r) << 16 | (int)(c->g) << 8 | (int)c->b));
-			fract.y++;
+			ft_get_rgb_smooth(c, f->i, f->it_max);
+			//ft_hsv2rgb(c, h, s, v);
+			//printf("x = %f and y = %f\n", f->x, f->y);
+			if (f->i == f->it_max)
+				mlx_put_pixel_img(image_str, f->x + param->e.move_x, f->y + param->e.move_y, 0x0);
+			else
+				mlx_put_pixel_img(image_str, f->x + param->e.move_x, f->y + param->e.move_y, ((c->r << 16) | (c->g << 8) | c->b));
+			f->y++;
 		}
-		fract.x++;
+		f->x++;
 	}
 
 	mlx_put_image_to_window(mlx_ptr, win_ptr, image_ptr, 0, 0);
 	mlx_destroy_image(mlx_ptr, image_ptr);
 }
-
 
 int		main(int ac, char **argv)
 {
@@ -102,12 +107,15 @@ int		main(int ac, char **argv)
 		perror("malloc failied");
 		return (0);
 	}
-	param->fract.zoom = 400;
+	param->e.zoom = 1;
+	param->e.move_x = 0;
+	param->e.move_y = 0;
 	param->fract.it_max = 50;
 	param->mlx_ptr = mlx_init();
 	param->win_ptr = mlx_new_window(param->mlx_ptr, WIDTH, HEIGHT, "fractol");
 	ft_draw_image(param->mlx_ptr, param->win_ptr, param);
 	mlx_mouse_hook(param->win_ptr, deal_mouse, param);
+	mlx_key_hook(param->win_ptr, deal_key, param);
 	mlx_loop(param->mlx_ptr);
 	return (0);
 }
