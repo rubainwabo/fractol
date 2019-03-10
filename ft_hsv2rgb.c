@@ -1,6 +1,6 @@
 #include "fractol.h"
 
-t_color		*ft_init(void)
+t_color	*ft_init(void)
 {
 	t_color	*c;
 

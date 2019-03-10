@@ -16,9 +16,9 @@
 # include "libft/libft.h"
 # include <stdio.h>
 # include <math.h>
-# include "minilibx_macos/mlx.h"
+# include "../minilibx/mlx.h"
 # define WIDTH 1200
-# define HEIGHT 800
+# define HEIGHT 600
 # define MAX(x, y, z) ((x >= y) ? ((x >= z) ? x : z) : ((y >= z) ? y : z))
 # define MIN(x, y, z) ((x <= y) ? ((x <= z) ? x : z) : ((y <= z) ? y : z))
 
@@ -59,10 +59,10 @@ typedef struct	s_hook
 	int			mouse_x;
 	int			mouse_y;
 	t_event		e;
-	t_fract		fract;
+	t_fract		*fract;
 }				t_hook;
 
-void	ft_draw_image(void *mlx_ptr, void *win_ptr, t_hook *param);
+void	ft_draw_image(void *mlx_ptr, void *win_ptr, t_hook *param, t_fract *f);
 int		ft_get_color(int color1, int color2, double percentage);
 int		ft_opti(float x, float y);
 int		deal_mouse(int button, int x, int y, void *param);
