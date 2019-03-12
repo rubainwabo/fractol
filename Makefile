@@ -18,6 +18,7 @@ SRC=srcs/ft_event_handling.c\
 	srcs/ft_mandelbrot.c\
 	srcs/ft_opti.c\
 	srcs/ft_fractal_init.c\
+	srcs/ft_julia.c
 
 OBJECTS=$(SRC:.c=.o)
 

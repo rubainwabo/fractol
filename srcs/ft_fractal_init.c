@@ -20,8 +20,8 @@ static t_fract	*ft_mandelbrot_init(void)
 		return (NULL);
 	f->x1 = -2.5;
 	f->x2 = 0.6;
-	f->y1 = 1.2;
-	f->y2 = -1.2;
+	f->y1 = -1.2;
+	f->y2 = 1.2;
 	return (f);
 }
 
@@ -32,9 +32,12 @@ static t_fract	*ft_julia_init(void)
 	if (!(f = (t_fract*)malloc(sizeof(*f))))
 		return (NULL);
 	f->x1 = -2.5;
-	f->x2 = 0.6;
-	f->y1 = 1.2;
-	f->y2 = -1.2;
+	f->x2 = 1.0;
+	f->y1 = -1.0;
+	f->y2 = 1.0;
+	f->n = 3;
+	f->c_r = - 0.7;
+	f->c_i = 0.27015;
 	return (f);
 }
 

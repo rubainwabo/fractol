@@ -6,7 +6,7 @@
 /*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:57:26 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/11 14:02:25 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/11 23:10:52 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,20 @@ void	mlx_put_pixel_img(char *image_str, int x, int y, int color)
 
 void	ft_draw_image(t_hook *p, t_fract *f)
 {
-	static void	*image_ptr;
-	static char	*image_str;
+	void	*image_ptr;
+	char	*image_str;
 	int		specs[3];
-	t_color	*c;
-	void	(*fptr)(char *, t_color *, t_hook *, t_fract *);
+	void	(*fptr)(char *, t_hook *, t_fract *);
 
-	c = 0;
-	if (!image_ptr)
-		image_ptr = mlx_new_image(p->mlx_ptr, WIDTH, HEIGHT);
-	if (!image_str)
-		image_str = mlx_get_data_addr(image_ptr, &specs[0], &specs[1], &specs[2]);
-	fptr = ft_mandelbrot;
-	(*fptr)(image_str, c, p, f);
+	image_ptr = mlx_new_image(p->mlx_ptr, WIDTH, HEIGHT);
+	image_str = mlx_get_data_addr(image_ptr, &specs[0], &specs[1], &specs[2]);
+	if (!ft_strcmp(p->w_fract, "Mandelbrot"))
+		fptr = ft_mandelbrot;
+	else if (!ft_strcmp(p->w_fract, "Julia"))
+		fptr = ft_julia;
+	else
+		fptr = NULL;
+	(*fptr)(image_str, p, f);
 	mlx_put_image_to_window(p->mlx_ptr, p->win_ptr, image_ptr, 0, 0);
 	mlx_destroy_image(p->mlx_ptr, image_ptr);
 }
@@ -76,8 +77,8 @@ t_fract	*ft_check_fractal(char **argv, t_hook *p)
 		perror("malloc failed");
 		return (0);
 	}
-	p->e.move_x = 0;
-	p->e.move_y = 0;
+	p->move_x = 0;
+	p->move_y = 0;
 	f->it_max = 50;
 	p->fract = f;
 	return (f);
@@ -93,10 +94,11 @@ int		main(int ac, char **argv)
 		return (0);
 	param->mlx_ptr = mlx_init();
 	param->win_ptr = mlx_new_window(param->mlx_ptr, WIDTH, HEIGHT, "fractol");
+	param->w_fract = argv[1];
 	ft_draw_image(param, f);
-	mlx_hook(param->win_ptr, 2, 1L<<0, deal_key, param);
+	mlx_hook(param->win_ptr, 6, 1<<0, mouse_move, param);
 	mlx_mouse_hook(param->win_ptr, deal_mouse, param);
-	//mlx_key_hook(param->win_ptr, deal_key, param);
+	mlx_key_hook(param->win_ptr, deal_key, param);
 	mlx_loop(param->mlx_ptr);
 	return (0);
 }
