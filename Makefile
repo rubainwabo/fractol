@@ -18,7 +18,8 @@ SRC=srcs/ft_event_handling.c\
 	srcs/ft_mandelbrot.c\
 	srcs/ft_opti.c\
 	srcs/ft_fractal_init.c\
-	srcs/ft_julia.c
+	srcs/ft_julia.c\
+	srcs/ft_pthread.c\
 
 OBJECTS=$(SRC:.c=.o)
 
@@ -26,11 +27,11 @@ Cflags = -Wall -Werror -Wextra
 
 ifeq ($(shell uname -s), Linux)
 		HEADERS = includes/fractol.h minilibx/mlx.h
-		LIBRARIES = -L minilibx -lmlx -L libft -lft
+		LIBRARIES = -L minilibx -lmlx -L libft -lft -lpthread
    		FRAMEWORKS = -Xext -X11
 else
 		HEADERS = includes/fractol.h minilibx_macos/mlx.h
-		LIBRARIES = -L minilibx_macos -lmlx -L libft -lft
+		LIBRARIES = -L minilibx_macos -lmlx -L libft -lft -lpthread
     	FRAMEWORKS=-framework OpenGl -framework Appkit
 endif
 

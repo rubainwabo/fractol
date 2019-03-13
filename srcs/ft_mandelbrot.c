@@ -12,45 +12,46 @@
 
 #include "../includes/fractol.h"
 
-void	ft_mandelbrot(char *image_str, t_hook *p, t_fract *f)
+void	*ft_mandelbrot(void *data)
 {
-	double	xtemp;
-	double	ytemp;
+	t_thread *d = (t_thread *)data;
 
-	f->x = -1;
-	while (++f->x < WIDTH)
+	d->f->x = d->x_start;
+	while (d->f->x < d->x_end)
 	{
-		f->y = -1;
-		while (++f->y < HEIGHT)
+		d->f->y = d->y_start;
+		while (d->f->y < d->y_end)
 		{
-			f->c_r = f->x1 + (f->x / WIDTH) * (f->x2 - f->x1) + p->move_x;
-			f->c_i = f->y1 + (f->y / HEIGHT) * (f->y2 - f->y1) + p->move_y;
-			f->z_r = 0;
-			f->z_i = 0;
-			f->i = -1;
-			if (!(ft_opti(f->c_r, f->c_i)))
-				f->i = f->it_max;
-			while (f->z_r * f->z_r + f->z_i * f->z_i <= 4 && ++f->i <
-				f->it_max)
+			d->f->c_r = d->f->x1 + (d->f->x / WIDTH) * (d->f->x2 - d->f->x1) +
+			d->f->move_x;
+			d->f->c_i = d->f->y1 + (d->f->y / HEIGHT) * (d->f->y2 - d->f->y1) +
+			d->f->move_y;
+			d->f->z_r = 0;
+			d->f->z_i = 0;
+			d->f->i = -1;
+			if (!(ft_opti(d->f->c_r, d->f->c_i)))
+				d->f->i = d->f->it_max;
+			while (d->f->z_r * d->f->z_r + d->f->z_i * d->f->z_i <= 1 << 16 &&
+				++d->f->i < d->f->it_max)
 			{
-				f->tmp = f->z_r;
-				xtemp = f->z_r * f->z_r - f->z_i * f->z_i + f->c_r;
-				ytemp = (f->z_i + f->z_i) * f->tmp + f->c_i;
-				if (f->z_r == xtemp && f->z_i == ytemp)
-				{
-					f->i = 40;
+				d->f->tmp = d->f->z_r;
+				d->f->xtemp = d->f->z_r * d->f->z_r - d->f->z_i * d->f->z_i +
+				d->f->c_r;
+				d->f->ytemp = (d->f->z_i + d->f->z_i) * d->f->tmp + d->f->c_i;
+				if (d->f->z_r == d->f->xtemp && d->f->z_i == d->f->ytemp &&
+					(d->f->i = d->f->it_max))
 					break;
-				}
-				f->z_r = xtemp;
-				f->z_i = ytemp;
+				d->f->z_r = d->f->xtemp;
+				d->f->z_i = d->f->ytemp;
 			}
-			if (f->i == f->it_max)
-				mlx_put_pixel_img(image_str, f->x, f->y, 0x0);
-			else if (f->i == 40)
-				mlx_put_pixel_img(image_str, f->x, f->y, 0xff0000);
+			if (d->f->i == d->f->it_max)
+				mlx_put_pixel_img(d->f->image_str, d->f->x, d->f->y, 0x0);
 			else
-				mlx_put_pixel_img(image_str, f->x, f->y, ft_get_rgb_smooth(f->i,
-					f->it_max));
+				mlx_put_pixel_img(d->f->image_str, d->f->x, d->f->y,
+					ft_get_rgb_smooth(d->f->i, d->f->it_max));
+			d->f->y++;
 		}
+		d->f->x++;
 	}
+	return (0);
 }

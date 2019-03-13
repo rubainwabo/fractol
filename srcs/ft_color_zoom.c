@@ -24,28 +24,28 @@ int 	ft_get_rgb_smooth(int i, int i_max)
 	return (color);
 }
 
-double	inter(double start, double end, double inter)
+static double	inter(double start, double end, double inter)
 {
 	return (start + (end - start) * inter);
 }
 
-void	zoom_init(t_fract *f, double m_r, double m_i, double zoom)
+static void	zoom_init(t_fract *f, double m_r, double m_i)
 {
 	double	interpolation;
 
-	interpolation = 1.0 / zoom;
+	interpolation = 1.0 / f->zoom;
 	f->x1 = inter(m_r, f->x1, interpolation);
 	f->y1 = inter(m_i, f->y1, interpolation);
 	f->x2 = inter(m_r, f->x2, interpolation);
 	f->y2 = inter(m_i, f->y2, interpolation);
 }
 
-void	ft_zoom(t_hook *p, t_fract *f)
+void	ft_zoom(t_fract *f)
 {
 	double	mouse_r;
 	double	mouse_i;
 
-	mouse_r = (double)p->mouse_x / (WIDTH / (f->x2 - f->x1)) + f->x1;
-	mouse_i = (double)p->mouse_y / (HEIGHT / (f->y2 - f->y1)) + f->y1;
-	zoom_init(f, mouse_r, mouse_i, p->zoom);
+	mouse_r = (double)f->mouse_x / (WIDTH / (f->x2 - f->x1)) + f->x1;
+	mouse_i = (double)f->mouse_y / (HEIGHT / (f->y2 - f->y1)) + f->y1;
+	zoom_init(f, mouse_r, mouse_i);
 }
