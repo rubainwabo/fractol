@@ -14,44 +14,64 @@
 
 void	*ft_mandelbrot(void *data)
 {
-	t_thread *d = (t_thread *)data;
+	t_thread *d;
+	register double z_r;
+	register double z_i;
+	register double c_r;
+	register double c_i;
+	register int	i;	
+	register double y;
+	register double x;
+	register double y1;
+	register double x1;
+	register double y2;
+	register double x2;
+	register double tmp;
+	register int 	psycho;
 
-	d->f->x = d->x_start;
-	while (d->f->x < d->x_end)
+	d = (t_thread *) data;
+	z_r = d->f->z_r;
+	z_i = d->f->z_i;
+	c_r = d->f->c_r;
+	c_i = d->f->c_i;
+	i = d->f->i;
+	y = d->f->y;
+	x = d->f->x;
+	y1 = d->f->y1;
+	x1 = d->f->x1;
+	y2 = d->f->y2;
+	x2 = d->f->x2;
+	tmp = d->f->tmp;
+	psycho = d->f->psycho;
+	x = d->x_start - 1;
+	while (++x < d->x_end)
 	{
-		d->f->y = d->y_start;
-		while (d->f->y < d->y_end)
+		y = d->y_start - 1;
+		while (++y < d->y_end)
 		{
-			d->f->c_r = d->f->x1 + (d->f->x / WIDTH) * (d->f->x2 - d->f->x1) +
+			c_r = x1 + (x / W_IMG) * (x2 - x1) +
 			d->f->move_x;
-			d->f->c_i = d->f->y1 + (d->f->y / HEIGHT) * (d->f->y2 - d->f->y1) +
+			c_i = y1 + (y / HEIGHT) * (y2 - y1) +
 			d->f->move_y;
-			d->f->z_r = 0;
-			d->f->z_i = 0;
-			d->f->i = -1;
-			if (!(ft_opti(d->f->c_r, d->f->c_i)))
-				d->f->i = d->f->it_max;
-			while (d->f->z_r * d->f->z_r + d->f->z_i * d->f->z_i <= 1 << 16 &&
-				++d->f->i < d->f->it_max)
+			z_r = 0;
+			z_i = 0;
+			i = -1;
+			while (z_r * z_r + z_i * z_i <= 4.0 &&
+				++i < d->f->it_max)
 			{
-				d->f->tmp = d->f->z_r;
-				d->f->xtemp = d->f->z_r * d->f->z_r - d->f->z_i * d->f->z_i +
-				d->f->c_r;
-				d->f->ytemp = (d->f->z_i + d->f->z_i) * d->f->tmp + d->f->c_i;
-				if (d->f->z_r == d->f->xtemp && d->f->z_i == d->f->ytemp &&
-					(d->f->i = d->f->it_max))
-					break;
-				d->f->z_r = d->f->xtemp;
-				d->f->z_i = d->f->ytemp;
+				tmp = z_r;
+				z_r = z_r * z_r - z_i * z_i +
+				c_r;
+				z_i = (z_i + z_i) * tmp + c_i;
 			}
-			if (d->f->i == d->f->it_max)
-				mlx_put_pixel_img(d->f->image_str, d->f->x, d->f->y, 0x0);
+			if (i == d->f->it_max)
+				mlx_put_pixel_img(d->f->image_str, x, y, i * 0x0);
+			if (i != d->f->it_max && psycho)
+				mlx_put_pixel_img(d->f->image_str, x, y, i * 0x1ce503);
 			else
-				mlx_put_pixel_img(d->f->image_str, d->f->x, d->f->y,
-					ft_get_rgb_smooth(d->f->i, d->f->it_max));
-			d->f->y++;
+				mlx_put_pixel_img(d->f->image_str, x, y,
+					ft_get_rgb_smooth(i, d->f->it_max));
 		}
-		d->f->x++;
 	}
 	return (0);
 }

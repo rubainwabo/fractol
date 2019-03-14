@@ -1,47 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pthread.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rkamegne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/14 18:19:37 by rkamegne          #+#    #+#             */
+/*   Updated: 2019/03/14 21:03:59 by rkamegne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fractol.h"
-//WANTED
-void    init_thread(t_fract *fract, t_thread data[8])
+
+void	init_thread(t_fract *fract, t_thread data[], int n)
 {
-    data[0] = (t_thread){.x_start = 0, .y_start = 0, .y_end = HEIGHT / 2,
-        .x_end = WIDTH / 4, .f = fract};
-    data[1] = (t_thread){.x_start = WIDTH / 4, .y_start = 0,
-        .y_end = HEIGHT / 2, .x_end = WIDTH / 2, .f = fract};
-    data[2] = (t_thread){.x_start = WIDTH / 2, .y_start = 0,
-        .y_end = HEIGHT / 2, .x_end = (WIDTH * 3) / 4, .f = fract};
-    data[3] = (t_thread){.x_start = (WIDTH * 3) / 4, .y_start = 0,
-        .y_end = HEIGHT / 2, .x_end = WIDTH, .f = fract};
-    data[4] = (t_thread){.x_start = 0, .y_start = HEIGHT / 2,
-       .y_end = HEIGHT, .x_end = WIDTH / 4, .f = fract};
-    data[5] = (t_thread){.x_start = WIDTH / 4, .y_start = HEIGHT / 2,
-        .y_end = HEIGHT, .x_end = WIDTH / 2, .f = fract};
-    data[6] = (t_thread){.x_start = WIDTH / 2, .y_start = HEIGHT / 2,
-        .y_end = HEIGHT, .x_end = (WIDTH * 3) / 4, .f = fract};
-    data[7] = (t_thread){.x_start = (WIDTH * 3) / 4, .y_start = HEIGHT / 2,
-        .y_end = HEIGHT, .x_end = WIDTH, .f = fract};
+	int		i;
+
+	data[0] = (t_thread){.x_start = 0, .y_start = 0, .y_end = HEIGHT,
+		.x_end = W_IMG / n, .f = fract};
+	i = 0;
+	while (++i < n)
+	{
+		data[i] = (t_thread){.x_start = data[i - 1].x_end, .y_start = 0,
+			.y_end = HEIGHT, .x_end = (i + 1) * W_IMG / n, .f = fract};
+	}
 }
 
-void     launch_threads(t_fract *fract)
+void	launch_threads(t_fract *fract, int n)
 {
-    pthread_t ids[8];
-    t_thread data[8];
-    pthread_attr_t attr;
+	pthread_t		ids[n];
+	t_thread		data[n];
+	pthread_attr_t	attr;
+	int				i;
 
-    pthread_attr_init(&attr);
-    init_thread(fract, data);
-    pthread_create(&(ids[0]), &attr, fract->thread, &data[0]);
-    pthread_join(ids[0], NULL);
-    pthread_create(&(ids[1]), &attr, fract->thread, &data[1]);
-    pthread_join(ids[1], NULL);
-    pthread_create(&(ids[2]), &attr, fract->thread, &data[2]);
-    pthread_join(ids[2], NULL);
-    pthread_create(&(ids[3]), &attr, fract->thread, &data[3]);
-    pthread_join(ids[3], NULL);
-    pthread_create(&(ids[4]), &attr, fract->thread, &data[4]);
-    pthread_join(ids[4], NULL);
-    pthread_create(&(ids[5]), &attr, fract->thread, &data[5]);
-    pthread_join(ids[5], NULL);
-    pthread_create(&(ids[6]), &attr, fract->thread, &data[6]);
-    pthread_join(ids[6], NULL);
-    pthread_create(&(ids[7]), &attr, fract->thread, &data[7]); 
-    pthread_join(ids[7], NULL);
+	pthread_attr_init(&attr);
+	init_thread(fract, data, n);
+	i = -1;
+	while (++i < n)
+	{
+		if (pthread_create(&(ids[i]), &attr, fract->thread, &data[i]) != 0)
+		{
+			perror("Can't create the thread\n");
+			break ;
+		}
+	}
+	i = -1;
+	while (++i < n)
+	{
+		if (pthread_join(ids[i], NULL) != 0)
+		{
+			perror("Can't join thread\n");
+			break ;
+		}
+	}
 }

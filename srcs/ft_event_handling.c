@@ -6,44 +6,67 @@
 /*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 23:24:53 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/11 23:11:53 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/14 20:56:32 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int		deal_mouse(int button, int x, int y, t_fract *f)
+static void		deal_clicks(int x, int y, t_fract *f)
 {
+	if (x >= W_IMG + 5 && x <= WIDTH && y >= 170 && y <= 200)
+	{
+		f->name = "Mandelbrot";
+		ft_fractal_init(f);
+	}
+	if (x >= W_IMG + 5 && x <= WIDTH && y >= 210 && y <= 240)
+	{
+		f->name = "Julia";
+		ft_fractal_init(f);
+	}
+	if (x >= W_IMG + 5 && x <= WIDTH && y >= 250 && y <= 280)
+	{
+		f->name = "Tricorn";
+		ft_fractal_init(f);
+	}
+	if (x >= W_IMG + 5 && x <= WIDTH && y >= 290 && y <= 320)
+		f->psycho = !f->psycho;
+}
+
+int				deal_mouse(int button, int x, int y, t_fract *f)
+{
+	f->mouse_x = x + 20;
+	f->mouse_y = y + 20;
+	if (button == 4)
+	{
+		f->zoom = 2.01;
+		ft_zoom(f);
+	}
+	if (button == 5)
+	{
+		f->zoom = 1 / 2.01;
+		ft_zoom(f);
+	}
 	if (button == 1)
-	{
-		f->mouse_x = x;
-		f->mouse_y = y;
-	}
-	else if (button == 5)
-	{
-		f->zoom = 1.11;
-		ft_zoom(f);
-	}
-	else if (button == 4)
-	{
-		f->zoom = 1 / 1.11;
-		ft_zoom(f);
-	}
+		deal_clicks(x, y, f);
 	ft_draw_image(f);
 	return (0);
 }
 
 static int		deal_key_sec(int key, t_fract *f)
 {
+	if (key == 82)
+		f->key_julia = !f->key_julia;
 	if (key == 53)
 	{
+		mlx_destroy_image(f->mlx_ptr, f->image_ptr);
 		(void)f;
 		exit(0);
 	}
 	return (0);
 }
 
-int		deal_key(int key, t_fract *f)
+int				deal_key(int key, t_fract *f)
 {
 	if (key == 124)
 		f->move_x -= (0.2 * (f->x2 - f->x1) / 3.1);
@@ -57,8 +80,29 @@ int		deal_key(int key, t_fract *f)
 		f->it_max += 15;
 	else if (key == 78)
 		f->it_max -= 15;
+	else if (key == 15)
+		ft_fractal_init(f);
 	else
 		deal_key_sec(key, f);
+	ft_draw_image(f);
+	return (0);
+}
+
+int				move_julia(int x, int y, t_fract *f)
+{
+	if (!ft_strcmp(f->name, "Julia") && f->key_julia != 0)
+	{
+		if (x <= 0 && y <= 0)
+		{
+			f->c_r -= x / 1000000.0;
+			f->c_i -= y / 1000000.0;
+		}
+		else
+		{
+			f->c_r += x / 1000000.0;
+			f->c_i += y / 1000000.0;
+		}
+	}
 	ft_draw_image(f);
 	return (0);
 }

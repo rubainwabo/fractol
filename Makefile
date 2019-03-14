@@ -16,9 +16,9 @@ SRC=srcs/ft_event_handling.c\
 	srcs/main.c\
 	srcs/ft_color_zoom.c\
 	srcs/ft_mandelbrot.c\
-	srcs/ft_opti.c\
 	srcs/ft_fractal_init.c\
 	srcs/ft_julia.c\
+	srcs/ft_tricorn.c\
 	srcs/ft_pthread.c\
 	libft/ft_strcmp.c\
 	libft/ft_putendl.c\
@@ -36,7 +36,7 @@ ifeq ($(shell uname -s), Linux)
 		LIBRARIES = -lm -L $(HEAD_MLX) -L $(HEAD_LFT) -lft -lmlx -lpthread
    		FRAMEWORKS = -lXext -lX11
 else
-		HEAD_MLX =/minilibx_macos/
+		HEAD_MLX =minilibx_macos/
 		HEAD_FRA = includes/
 		LIBRARIES = -L minilibx_macos -lmlx -L libft -lft -lpthread
     	FRAMEWORKS=-framework OpenGl -framework Appkit
