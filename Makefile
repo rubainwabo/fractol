@@ -20,17 +20,24 @@ SRC=srcs/ft_event_handling.c\
 	srcs/ft_fractal_init.c\
 	srcs/ft_julia.c\
 	srcs/ft_pthread.c\
+	#libft/ft_strcmp.c\
+	#libft/ft_putendl.c\
+	#libft/ft_putstr.c\
+	#libft/ft_putchar.c\
 
 OBJECTS=$(SRC:.c=.o)
+HEAD_LFT = libft/
 
 Cflags = -Wall -Werror -Wextra
 
 ifeq ($(shell uname -s), Linux)
-		HEADERS = includes/fractol.h minilibx/mlx.h
-		LIBRARIES = -L minilibx -lmlx -L libft -lft -lpthread
-   		FRAMEWORKS = -Xext -X11
+		HEAD_MLX =../minilibx/
+		HEAD_FRA = includes/
+		LIBRARIES = -lm -L $(HEAD_MLX) -L $(HEAD_LFT) -lft -lmlx -lpthread
+   		FRAMEWORKS = -lXext -lX11
 else
-		HEADERS = includes/fractol.h minilibx_macos/mlx.h
+		HEAD_MLX =/minilibx_macos/
+		HEAD_FRA = includes/
 		LIBRARIES = -L minilibx_macos -lmlx -L libft -lft -lpthread
     	FRAMEWORKS=-framework OpenGl -framework Appkit
 endif
@@ -39,7 +46,7 @@ all: $(NAME)
 
 $(NAME):
 	#Compiling
-	gcc $(Cflags) -o $(NAME) $(SRC) $(LIBRARIES) $(FRAMEWORKS)
+	gcc $(Cflags) -I $(HEAD_LFT) -I $(HEAD_FRA) -I $(HEAD_MLX) -o $(NAME) $(SRC) $(LIBRARIES) $(FRAMEWORKS)
 
 clean:
 	#Cleaning

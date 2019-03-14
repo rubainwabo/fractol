@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fractol.h"
+#include "fractol.h"
 
 int		ft_opti(double x, double y)
 {

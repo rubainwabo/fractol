@@ -10,59 +10,47 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fractol.h"
+#include "fractol.h"
 
-static t_fract	*ft_mandelbrot_init(void)
+static void ft_mandelbrot_init(t_fract *f)
 {
-	t_fract	*f;
-
-	if (!(f = (t_fract*)malloc(sizeof(*f))))
-		exit (0);
 	f->x1 = -2.5;
 	f->x2 = 0.6;
 	f->y1 = -1.2;
 	f->y2 = 1.2;
-	f->thread = ft_mandelbrot;
-	return (f);
 }
 
-static t_fract	*ft_julia_init(void)
+static void ft_julia_init(t_fract *f)
 {
-	t_fract *f;
-
-	if (!(f = (t_fract*)malloc(sizeof(*f))))
-		exit (0);
 	f->x1 = -2.5;
 	f->x2 = 1.0;
 	f->y1 = -1.0;
 	f->y2 = 1.0;
 	f->c_r = - 0.7;
 	f->c_i = 0.27015;
-	f->thread = ft_julia;
-	return (f);
 }
 
-static	t_fract	*ft_fract3(void)
+static void ft_fract3(t_fract *f)
 {
-	t_fract *f;
-
-	if (!(f = (t_fract*)malloc(sizeof(*f))))
-		exit (0);
 	f->x1 = -2.5;
 	f->x2 = 0.6;
 	f->y1 = 1.2;
 	f->y2 = -1.2;
-	return (f);
 }
 
 t_fract	*ft_fractal_init(char *str)
 {
+	t_fract	*f;
+
+	if (!(f = (t_fract*)malloc(sizeof(*f))))
+		exit (0);
 	if (!ft_strcmp(str, "Mandelbrot"))
-		return (ft_mandelbrot_init());
+		ft_mandelbrot_init(f);
 	else if (!ft_strcmp(str, "Julia"))
-		return (ft_julia_init());
+		ft_julia_init(f);
 	else if (!ft_strcmp(str, "fract_3"))
-		return (ft_fract3());
+		ft_fract3(f);
 	else
 		exit(0);
+	return (f);
 }

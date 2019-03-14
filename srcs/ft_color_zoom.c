@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fractol.h"
+#include "fractol.h"
 
 int 	ft_get_rgb_smooth(int i, int i_max)
 {

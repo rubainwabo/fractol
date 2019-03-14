@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fractol.h"
+#include "fractol.h"
 
 int		deal_mouse(int button, int x, int y, t_fract *f)
 {
@@ -21,12 +21,12 @@ int		deal_mouse(int button, int x, int y, t_fract *f)
 	}
 	else if (button == 5)
 	{
-		f->zoom = 2.01;
+		f->zoom = 1.11;
 		ft_zoom(f);
 	}
 	else if (button == 4)
 	{
-		f->zoom = 1 / 2.01;
+		f->zoom = 1 / 1.11;
 		ft_zoom(f);
 	}
 	ft_draw_image(f);

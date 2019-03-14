@@ -13,11 +13,11 @@
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# include "../libft/libft.h"
+# include "libft.h"
 # include <stdio.h>
 # include <math.h>
 # include <pthread.h>
-# include "../minilibx_macos/mlx.h"
+# include "mlx.h"
 # define WIDTH 1000
 # define HEIGHT 1000
 

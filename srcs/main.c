@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/fractol.h"
+#include "fractol.h"
 
 void	mlx_put_pixel_img(char *image_str, int x, int y, int color)
 {
@@ -59,7 +59,7 @@ static t_fract	*ft_check_fractal(char *str)
 	f->move_y = 0;
 	f->mouse_x = WIDTH / 2;
 	f->mouse_y = HEIGHT / 2;
-	f->it_max = 100;
+	f->it_max = 500;
 	if (!ft_strcmp(str, "Mandelbrot"))
 		f->thread = ft_mandelbrot;
 	else if (!ft_strcmp(str, "Julia"))

@@ -1,4 +1,4 @@
-#include "../includes/fractol.h"
+#include "fractol.h"
 
 // void	*ft_julia(void *data)
 // {
@@ -38,36 +38,39 @@ void	*ft_julia(void *data)
 	t_thread *d = (t_thread *) data;
 
 	d->f->x = d->x_start - 1;
-	double lol = d->f->z_r;
-	double i = d->f->z_i;
-	double i2 = d->f->i;
-	double y = d->f->y;
-	double x = d->f->x;
-	double y1 = d->f->y1;
-	double x1 = d->f->x1;
+	register double z_r = d->f->z_r;
+	register double z_i = d->f->z_i;
+	register int	i = d->f->i;
+	register double y = d->f->y;
+	register double x = d->f->x;
+	register double y1 = d->f->y1;
+	register double x1 = d->f->x1;
+	register double y2 = d->f->y2;
+	register double x2 = d->f->x2;
+	register double tmp = d->f->tmp;
 
-	while (++d->f->x < d->x_end)
+	while (++x< d->x_end)
 	{
 		y = d->y_start - 1;
 		while(++y < d->y_end)
 		{
-			lol = x1 + (d->f->x / WIDTH) * (d->f->x2 - x1) + d->f->move_x;
-			i = y1 + (y / HEIGHT) * (y2 - y1) + d->f->move_y;
-			i2 = -1;
-			while (lol * lol + i * i < 1 << 16 && ++i2 < d->f->it_max)
+			z_r = x1 + (x / WIDTH) * (x2 - x1) + d->f->move_x;
+			z_i = y1 + (y / HEIGHT) * (y2 - y1) + d->f->move_y;
+			i = -1;
+			while (z_r * z_r + z_i * z_i < 1 << 16 && ++i < d->f->it_max)
 			{
-				d->f->tmp = lol * lol - i * i + d->f->c_r;
-				i = 2 * lol * i + d->f->c_i;
-				lol = d->f->tmp;
+				tmp = z_r * z_r - z_i * z_i + d->f->c_r;
+				z_i = 2 * z_r * z_i + d->f->c_i;
+				z_r = tmp;
 			}
-			if (i2 == d->f->it_max)
+			if (i == d->f->it_max)
 				mlx_put_pixel_img(d->f->image_str, x, y, 0x0);
-			else if (i2 % 4 == 0)
-				mlx_put_pixel_img(d->f->image_str, x, y, 0x9988de * i2);
-			else if (i2 % 3 == 0)
-				mlx_put_pixel_img(d->f->image_str, x, y, 0x8899de * i2);
+			else if (i % 4 == 0)
+				mlx_put_pixel_img(d->f->image_str, x, y, 0x9988de * i);
+			else if (i % 3 == 0)
+				mlx_put_pixel_img(d->f->image_str, x, y, 0x8899de * i);
 			else
-				mlx_put_pixel_img(d->f->image_str, x, y, ft_get_rgb_smooth(i2,
+				mlx_put_pixel_img(d->f->image_str, x, y, ft_get_rgb_smooth(i,
 					d->f->it_max));
 		}
 	}

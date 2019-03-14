@@ -1,4 +1,4 @@
-#include "../includes/fractol.h"
+#include "fractol.h"
 //WANTED
 void    init_thread(t_fract *fract, t_thread data[8])
 {
