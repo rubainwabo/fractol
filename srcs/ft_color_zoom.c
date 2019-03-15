@@ -45,8 +45,8 @@ void			ft_zoom(t_fract *f)
 	double	mouse_r;
 	double	mouse_i;
 
-	mouse_r = (double)f->mouse_x / (WIDTH / (f->x2 - f->x1)) + f->x1;
-	mouse_i = (double)f->mouse_y / (HEIGHT / (f->y2 - f->y1)) + f->y1;
+	mouse_r = f->mouse_x / (W_IMG / (f->x2 - f->x1)) + f->x1;
+	mouse_i = f->mouse_y / (HEIGHT / (f->y2 - f->y1)) + f->y1;
 	zoom_init(f, mouse_r, mouse_i);
 }
 
@@ -62,7 +62,7 @@ void			ft_instructions(void *mlx_ptr, void *win_ptr)
 	mlx_string_put(mlx_ptr, win_ptr, W_IMG + 5, 50, 0x1ec503,
 			"+/- : iterations");
 	mlx_string_put(mlx_ptr, win_ptr, W_IMG + 5, 90, 0x1ec503,
-			"scroll :zoom");
+			"scroll : zoom");
 	mlx_string_put(mlx_ptr, win_ptr, W_IMG + 5, 130, 0x1ec503,
 			"r : reset changes");
 	mlx_string_put(mlx_ptr, win_ptr, W_IMG + 5, 170, 0xffff00,
@@ -71,6 +71,8 @@ void			ft_instructions(void *mlx_ptr, void *win_ptr)
 		"Julia");
 	mlx_string_put(mlx_ptr, win_ptr, W_IMG + 5, 250, 0xffff00,
 		"Tricorn");
-	mlx_string_put(mlx_ptr, win_ptr, W_IMG + 5, 290, 0xff0000,
-		"PSYCHO");
+	mlx_string_put(mlx_ptr, win_ptr, W_IMG + 5, 290, 0xffff00,
+		"B_ship");
+	mlx_string_put(mlx_ptr, win_ptr, W_IMG + 5, 330, 0xff0000,
+		"lmb : palette");
 }

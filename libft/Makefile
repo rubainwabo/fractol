@@ -34,17 +34,17 @@ all: $(NAME)
 
 $(NAME):
 	#Compiling
-	gcc -Wall -Wextra -Werror -I$(HEADERS) -c $(SRC) 
-	ar -rcs $(NAME) $(OBJECTS)
+	@gcc -Wall -Wextra -Werror -I$(HEADERS) -c $(SRC) 
+	@ar -rcs $(NAME) $(OBJECTS)
 
 clean:
 	#Cleaning
-	/bin/rm -f $(OBJECTS)
+	@/bin/rm -f $(OBJECTS)
 
 fclean:
 	#Fcleaning
-	/bin/rm -f $(OBJECTS)
-	/bin/rm -f $(NAME)
+	@/bin/rm -f $(OBJECTS)
+	@/bin/rm -f $(NAME)
 
 re: fclean all
 

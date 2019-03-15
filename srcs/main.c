@@ -12,7 +12,7 @@
 
 #include "fractol.h"
 
-void			mlx_put_pixel_img(char *image_str, int x, int y, int color)
+inline void		mlx_put_pixel_img(char *image_str, int x, int y, int color)
 {
 	unsigned int	pos;
 
@@ -25,7 +25,7 @@ void			mlx_put_pixel_img(char *image_str, int x, int y, int color)
 	}
 }
 
-void			ft_draw_image(t_fract *f)
+inline void		ft_draw_image(t_fract *f)
 {
 	launch_threads(f, NTHREAD);
 	mlx_put_image_to_window(f->mlx_ptr, f->win_ptr, f->image_ptr, 0, 0);
@@ -35,13 +35,14 @@ static int		ft_check_error(int ac, char *str)
 {
 	if (ac != 2)
 	{
-		ft_putendl("Usage: ./fractol Mandelbrot/Julia/Tricorn");
+		ft_putendl("Usage: ./fractol Mandelbrot/Julia/Tricorn/Burning_ship");
 		return (0);
 	}
 	if (ac == 2 && (ft_strcmp("Mandelbrot", str) &&
-		ft_strcmp("Julia", str) && ft_strcmp("Tricorn", str)))
+		ft_strcmp("Julia", str) && ft_strcmp("Tricorn", str)) &&
+		ft_strcmp("Burning_ship", str))
 	{
-		ft_putendl("Usage: ./fractol Mandelbrot/Julia/Tricorn");
+		ft_putendl("Usage: ./fractol Mandelbrot/Julia/Tricorn/Burning_ship");
 		return (0);
 	}
 	return (1);
@@ -72,8 +73,9 @@ int				main(int ac, char **argv)
 	f->image_ptr = mlx_new_image(f->mlx_ptr, W_IMG, HEIGHT);
 	f->image_str = mlx_get_data_addr(f->image_ptr, &specs[0], &specs[1],
 			&specs[2]);
-	ft_draw_image(f);
+	ft_draw_circle(f->mlx_ptr, f->win_ptr, (float)100);
 	ft_instructions(f->mlx_ptr, f->win_ptr);
+	ft_draw_image(f);
 	mlx_hook(f->win_ptr, 6, 1L << 6, move_julia, f);
 	mlx_mouse_hook(f->win_ptr, deal_mouse, f);
 	mlx_key_hook(f->win_ptr, deal_key, f);

@@ -18,6 +18,8 @@ static void		ft_mandelbrot_init(t_fract *f)
 	f->x2 = 0.6;
 	f->y1 = -1.2;
 	f->y2 = 1.2;
+	f->move_x = 0;
+	f->move_y = 0;
 }
 
 static void		ft_julia_init(t_fract *f)
@@ -28,6 +30,9 @@ static void		ft_julia_init(t_fract *f)
 	f->y2 = 1.0;
 	f->c_r = -0.7;
 	f->c_i = 0.27015;
+	f->move_x = 0;
+	f->move_y = 0;
+	f->key_julia = 0;
 }
 
 static void		ft_tricorn_init(t_fract *f)
@@ -36,6 +41,8 @@ static void		ft_tricorn_init(t_fract *f)
 	f->x2 = 1.0;
 	f->y1 = -1.0;
 	f->y2 = 1.0;
+	f->move_x = 0;
+	f->move_y = 0;
 }
 
 void			ft_fractal_init(t_fract *f)
@@ -50,16 +57,19 @@ void			ft_fractal_init(t_fract *f)
 		ft_julia_init(f);
 		f->thread = ft_julia;
 	}
+	else if (!ft_strcmp(f->name, "Burning_ship"))
+	{
+		ft_tricorn_init(f);
+		f->thread = ft_burning_ship;
+	}
 	else
 	{
 		ft_tricorn_init(f);
 		f->thread = ft_tricorn;
 	}
-	f->move_x = 0;
-	f->move_y = 0;
 	f->mouse_x = W_IMG / 2;
 	f->mouse_y = HEIGHT / 2;
 	f->it_max = 50;
-	f->key_julia = 0;
-	f->psycho = 0;
+	f->color = 0x1ce503;
+	f->coloured = 0;
 }

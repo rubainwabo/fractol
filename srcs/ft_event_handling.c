@@ -29,14 +29,18 @@ static void		deal_clicks(int x, int y, t_fract *f)
 		f->name = "Tricorn";
 		ft_fractal_init(f);
 	}
-	if (x >= W_IMG + 5 && x <= WIDTH && y >= 290 && y <= 320)
-		f->psycho = !f->psycho;
+	if (x > WIDTH - 185 && x < WIDTH - 15 &&
+		y > HEIGHT - 185 && y < HEIGHT - 15)
+	{
+		f->color = ft_color_fractal(x, y);
+		f->coloured = 1;
+	}
 }
 
 int				deal_mouse(int button, int x, int y, t_fract *f)
 {
-	f->mouse_x = x + 20;
-	f->mouse_y = y + 20;
+	f->mouse_x = x;
+	f->mouse_y = y;
 	if (button == 4)
 	{
 		f->zoom = 2.01;
@@ -48,7 +52,14 @@ int				deal_mouse(int button, int x, int y, t_fract *f)
 		ft_zoom(f);
 	}
 	if (button == 1)
+	{
+		if (x >= W_IMG + 5 && x <= WIDTH && y >= 290 && y <= 320)
+		{
+			f->name = "Burning_ship";
+			ft_fractal_init(f);
+		}
 		deal_clicks(x, y, f);
+	}
 	ft_draw_image(f);
 	return (0);
 }

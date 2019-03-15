@@ -6,7 +6,7 @@
 /*   By: rkamegne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/12 19:00:24 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/01/26 21:11:22 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/15 17:40:12 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,10 @@ int		ft_atoi_base(const char *str, int str_base)
 			negatif = 1;
 		i++;
 	}
-	while (base(str[i], str_base) != -1)
+	while (base(str[i++], str_base) != -1)
 	{
 		nb = nb * str_base;
 		nb = nb + base(str[i], str_base);
-		i++;
 	}
 	if (negatif)
 		return (-nb);

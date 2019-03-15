@@ -20,10 +20,8 @@ SRC=srcs/ft_event_handling.c\
 	srcs/ft_julia.c\
 	srcs/ft_tricorn.c\
 	srcs/ft_pthread.c\
-	libft/ft_strcmp.c\
-	libft/ft_putendl.c\
-	libft/ft_putstr.c\
-	libft/ft_putchar.c\
+	srcs/ft_palette.c\
+	srcs/ft_burning_ship.c\
 
 OBJECTS=$(SRC:.c=.o)
 HEAD_LFT = libft/
@@ -45,16 +43,19 @@ endif
 all: $(NAME)
 
 $(NAME):
-	@gcc $(Cflags) -I $(HEAD_LFT) -I $(HEAD_FRA) -I $(HEAD_MLX) -o $(NAME) $(SRC) $(LIBRARIES) $(FRAMEWORKS)
+	@make -C $(HEAD_LFT)
+	gcc $(Cflags) -I $(HEAD_LFT) -I $(HEAD_FRA) -I $(HEAD_MLX) -o $(NAME) $(SRC) $(LIBRARIES) $(FRAMEWORKS)
 	@printf '\033[32m[ ✔ ] %s\n\033[0m' "Create Fractol"
 
 clean:
-	@/bin/rm -f $(OBJECTS)
+	@make clean -C $(HEAD_LFT)
+	/bin/rm -f $(OBJECTS)
 	@printf '\033[32m[ ✔ ] %s\n\033[0m' "Cleaning .o files"
 
 fclean: clean
-	@/bin/rm -f $(NAME)
-	@printf '\033[32m[ ✔ ] %s\n\033[0m' "Cleaning .a files"
+	@make fclean -C $(HEAD_LFT)
+	/bin/rm -f $(NAME)
+	@printf '\033[32m[ ✔ ] %s\n\033[0m' "Cleaning executable"
 
 re: fclean all
 

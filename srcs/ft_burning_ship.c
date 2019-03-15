@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_burning_ship.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rkamegne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/19 17:57:26 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/15 17:34:52 by rkamegne         ###   ########.fr       */
+/*   Created: 2019/03/15 16:02:16 by rkamegne          #+#    #+#             */
+/*   Updated: 2019/03/15 17:37:02 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,26 @@
 
 static void	ft_loop(t_thread *a, t_thread *d)
 {
-	a->z_r = 0;
-	a->z_i = 0;
 	a->i = -1;
-	while (a->z_r * a->z_r + a->z_i * a->z_i <= 1 << 16 && ++a->i <
+	while (a->z_r * a->z_r + a->z_i * a->z_i <= 65535 && ++a->i <
 		d->f->it_max)
 	{
-		a->tmp = a->z_r;
-		a->z_r = a->z_r * a->z_r - a->z_i * a->z_i + a->c_r;
-		a->z_i = (a->z_i + a->z_i) * a->tmp + a->c_i;
+		a->tmp = a->z_r * a->z_r - a->z_i * a->z_i + a->c_r;
+		a->z_i = fabs(2 * a->tmp * a->z_i) + a->c_i;
+		a->z_r = fabs(a->tmp);
 	}
 }
 
-void		*ft_mandelbrot(void *data)
+void		ft_fractal_thread(t_thread *a, t_thread *d)
+{
+	a->y1 = d->f->y1;
+	a->x1 = d->f->x1;
+	a->y2 = d->f->y2;
+	a->x2 = d->f->x2;
+	a->x = d->x_start - 1;
+}
+
+void		*ft_burning_ship(void *data)
 {
 	t_thread	*d;
 	t_thread	a;
@@ -38,10 +45,10 @@ void		*ft_mandelbrot(void *data)
 		a.y = d->y_start - 1;
 		while (++a.y < d->y_end)
 		{
-			a.c_r = a.x1 + (a.x / W_IMG) * (a.x2 - a.x1) +
-			d->f->move_x;
-			a.c_i = a.y1 + (a.y / HEIGHT) * (a.y2 - a.y1) +
-			d->f->move_y;
+			a.c_r = a.x1 + (a.x / W_IMG) * (a.x2 - a.x1) + d->f->move_x;
+			a.c_i = a.y1 + (a.y / HEIGHT) * (a.y2 - a.y1) + d->f->move_y - 0.37;
+			a.z_r = a.c_r;
+			a.z_i = a.c_i;
 			ft_loop(&a, d);
 			if (a.i == d->f->it_max)
 				mlx_put_pixel_img(d->f->image_str, a.x, a.y, a.i * 0x0);
