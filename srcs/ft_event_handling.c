@@ -6,7 +6,7 @@
 /*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 23:24:53 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/17 12:39:44 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/17 16:36:46 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,16 +103,8 @@ int				move_julia(int x, int y, t_fract *f)
 {
 	if (!ft_strcmp(f->name, "Julia") && f->key_julia != 0)
 	{
-		if (x <= 0 && y <= 0)
-		{
-			f->c_r -= x / 1000000.0;
-			f->c_i -= y / 1000000.0;
-		}
-		else
-		{
-			f->c_r += x / 1000000.0;
-			f->c_i += y / 1000000.0;
-		}
+		f->c_r = -2.5 + (double)x / 2300 * 3.5;
+		f->c_i = -1.0 + (double)y / 1100 * 2.0;
 	}
 	ft_draw_image(f);
 	return (0);
