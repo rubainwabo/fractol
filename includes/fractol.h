@@ -6,7 +6,7 @@
 /*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 17:58:03 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/15 17:41:27 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/17 13:06:28 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <math.h>
 # include <pthread.h>
 # include "mlx.h"
-# define WIDTH 1000
+# define WIDTH 1200
 # define HEIGHT 800
 # define W_IMG  (WIDTH - 200)
 # define NTHREAD 8

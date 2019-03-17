@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pthread.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rkamegne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rkamegne <rkamegne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 18:19:37 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/14 21:03:59 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/17 13:10:59 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	launch_threads(t_fract *fract, int n)
 		if (pthread_create(&(ids[i]), &attr, fract->thread, &data[i]) != 0)
 		{
 			perror("Can't create the thread\n");
-			break ;
+			exit(0);
 		}
 	}
 	i = -1;
@@ -50,7 +50,7 @@ void	launch_threads(t_fract *fract, int n)
 		if (pthread_join(ids[i], NULL) != 0)
 		{
 			perror("Can't join thread\n");
-			break ;
+			exit(0);
 		}
 	}
 }

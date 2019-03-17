@@ -6,7 +6,7 @@
 #    By: rkamegne <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/11 21:28:22 by rkamegne          #+#    #+#              #
-#    Updated: 2019/03/11 21:28:24 by rkamegne         ###   ########.fr        #
+#    Updated: 2019/03/17 12:37:19 by rkamegne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,18 +44,20 @@ all: $(NAME)
 
 $(NAME):
 	@make -C $(HEAD_LFT)
+	@make -C $(HEAD_MLX)
 	gcc $(Cflags) -I $(HEAD_LFT) -I $(HEAD_FRA) -I $(HEAD_MLX) -o $(NAME) $(SRC) $(LIBRARIES) $(FRAMEWORKS)
-	@printf '\033[32m[ ✔ ] %s\n\033[0m' "Create Fractol"
+	@echo "\033[32m[ ✔ ] \033[32mCreate Fractol \033[0m"
 
 clean:
 	@make clean -C $(HEAD_LFT)
+	@make clean -C $(HEAD_MLX)
 	/bin/rm -f $(OBJECTS)
-	@printf '\033[32m[ ✔ ] %s\n\033[0m' "Cleaning .o files"
+	@echo "\033[32m[ ✔ ] \033[32mCleaning .o files \033[0m"
 
 fclean: clean
 	@make fclean -C $(HEAD_LFT)
 	/bin/rm -f $(NAME)
-	@printf '\033[32m[ ✔ ] %s\n\033[0m' "Cleaning executable"
+	@echo "\033[32m[ ✔ ] \033[32mCleaning executable \033[0m"
 
 re: fclean all
 

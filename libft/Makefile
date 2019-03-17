@@ -6,7 +6,7 @@
 #    By: rkamegne <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/18 18:23:24 by rkamegne          #+#    #+#              #
-#    Updated: 2019/01/29 20:15:15 by rkamegne         ###   ########.fr        #
+#    Updated: 2019/03/17 12:26:11 by rkamegne         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,16 +33,13 @@ HEADERS=libft.h
 all: $(NAME)
 
 $(NAME):
-	#Compiling
 	@gcc -Wall -Wextra -Werror -I$(HEADERS) -c $(SRC) 
 	@ar -rcs $(NAME) $(OBJECTS)
 
 clean:
-	#Cleaning
 	@/bin/rm -f $(OBJECTS)
 
 fclean:
-	#Fcleaning
 	@/bin/rm -f $(OBJECTS)
 	@/bin/rm -f $(NAME)
 

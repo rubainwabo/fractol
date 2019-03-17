@@ -6,7 +6,7 @@
 /*   By: rkamegne <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/15 16:02:16 by rkamegne          #+#    #+#             */
-/*   Updated: 2019/03/15 17:37:02 by rkamegne         ###   ########.fr       */
+/*   Updated: 2019/03/17 12:45:07 by rkamegne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	ft_loop(t_thread *a, t_thread *d)
 		d->f->it_max)
 	{
 		a->tmp = a->z_r * a->z_r - a->z_i * a->z_i + a->c_r;
-		a->z_i = fabs(2 * a->tmp * a->z_i) + a->c_i;
+		a->z_i = fabs(-2 * a->z_r * a->z_i) + a->c_i;
 		a->z_r = fabs(a->tmp);
 	}
 }
